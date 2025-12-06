@@ -1020,6 +1020,30 @@ class Solution:
         return dummyhead.next
 ```
 
+四刷的代码，思路是一样的，只是具体细节有些差别：好吧。上面的代码更优秀
+
+```python
+class Solution:
+    def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode()
+        dummy.next = head
+        pre = dummy
+        if not head:
+            return None
+        node1 = head
+        while node1 and node1.next:
+            node2 = node1.next
+            tmp = node2.next
+            pre.next = node2
+            node2.next = node1
+            # 一开始没写这一句，while死循环了，主要是影响到了node2 = node1.next这一句
+            # 这里不把node1的next修改一下，node2就指向自己了；所以三个涉及到的node的next都要及时修改
+            node1.next = tmp
+            pre = node1
+            node1 = tmp
+        return dummy.next
+```
+
 方法二：递归实现
 
 递归结束的条件是剩下一个节点或者没有剩下节点，具体思路看代码注释
@@ -1104,6 +1128,56 @@ class Solution:
         # 返回！！！
         return dummyhead.next
 ```
+
+四刷自己写出来的代码，我觉得还不错：
+
+```python
+class Solution:
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        dummy = ListNode()
+        dummy.next = head
+        # start从假头开始
+        start = dummy
+        while True:
+            count = k
+            # 当前段的前一个节点
+            pre = start
+            # 当前段的head
+            cur = pre.next
+            # 结束时start到达当前翻转端的最后一个节点
+            for i in range(k):
+                if start.next is not None:
+                    start = start.next
+                    count -= 1
+                else:
+                    break
+            if count > 0 :
+                return dummy.next
+            # 下一段的开始
+            next_start = start.next
+            # 当前段和后面断开
+            start.next = None
+            # 执行当前段的翻转
+            # 不用假头了，用当前段的head：cur
+            new_pre = cur
+            # new_cur用head的下一个
+            new_cur = cur.next
+            # 翻转逻辑和之前一样
+            while new_cur:
+                tmp = new_cur.next
+                new_cur.next = new_pre
+                new_pre = new_cur
+                new_cur = tmp
+            # new_pre是翻转后的新头
+            # pre是当前段的前一个节点；和前面段接上
+            pre.next = new_pre
+            # cur是当前段翻转前的head，也即是翻转后的最后一个；和后面段也接上
+            cur.next = next_start
+            # start更新为当前段翻转后的最后一个节点
+            start = cur 
+```
+
+
 
 ### [138. 随机链表的复制](https://leetcode.cn/problems/copy-list-with-random-pointer/)
 
@@ -1483,7 +1557,7 @@ class Solution:
 
 ### [102. 二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/)
 
-**思路：**如果是普通的层序遍历那就eaay到不行了，这里主要是要分层输出。
+**思路：**如果是普通的层序遍历那就easy到不行了，这里主要是要分层输出。
 
 最主要的四个变量。ans 用于存储最终要输出的结果，queue用于存储当前层要处理的节点，tmp用于在while循环中暂时存储某一层的节点的值，queue1用于在循环中暂时存储queue中节点所有下一层的孩子，也就是下一批要处理的对象。
 
@@ -1963,6 +2037,39 @@ class Solution(object):
         else:
             return False
 ```
+
+四刷这种写法用 defaultdict(list)进行了一点点优化
+
+```python
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        # 各课的入度
+        zero_in = [0] * numCourses
+        # 入度为0的课
+        queue = []
+        # defaultdict更方便，可以减少判断
+        pre_dict = defaultdict(list)
+        for i in range(len(prerequisites)):
+            pre_dict[prerequisites[i][1]].append(prerequisites[i][0])
+            zero_in[prerequisites[i][0]] += 1
+        for i in range(len(zero_in)):
+            if zero_in[i] == 0:
+                queue.append(i)
+        while queue:
+            cur = queue.pop(0)
+            numCourses -= 1
+            for cours in pre_dict[cur]:
+                # 不会出现重复入队，因为会变为-1，而不是一直保持0
+                zero_in[cours] -= 1
+                if zero_in[cours] == 0:
+                    queue.append(cours)
+
+        if numCourses == 0:
+            return True
+        return False
+```
+
+
 
 ### [208. 实现 Trie (前缀树)](https://leetcode.cn/problems/implement-trie-prefix-tree/)
 
