@@ -2565,9 +2565,6 @@ class Solution:
 class Solution:
     def findMin(self, nums: List[int]) -> int:
         left, right = 0, len(nums)-1
-        # 数组没有进行旋转操作/数组就只有一个元素，直接返回第一个元素
-        if nums[left] <= nums[right]:
-            return nums[left]
         while left <= right:
             mid = (left+right) // 2
             # nums[mid] < nums[mid-1]那就说明mid位置正好是旋转点，返回
@@ -2576,16 +2573,18 @@ class Solution:
             if mid > 0 and nums[mid] < nums[mid-1]:
                 return nums[mid]
             # mid比0处数字大，则左侧有序，旋转点位于mid右侧
+            # nums[0]这个地方不能是nums[left]!!
+            # left一直在变动，如果变到一个较小的值，比nums[left]大根本就不能确定左侧的有序性！
+            # 固定和nums[0]进行比较才是正确的做法！
             if nums[mid] >= nums[0]:
                 left = mid+1
             # 否则，旋转点位于mid左侧
             else:
                 right = mid-1
-        # left最终会收敛与旋转点坐标
-        return nums[left]
+        # 如果发生了旋转，在while循环里面会最后找到旋转点的，如果在while里没找到，就是没有发生旋转！
+        # return第一个元素就ok
+        return nums[0]
 ````
-
-
 
 ### [4. 寻找两个正序数组的中位数](https://leetcode.cn/problems/median-of-two-sorted-arrays/)
 
