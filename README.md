@@ -2709,7 +2709,7 @@ class MinStack:
 
 3.``']'``： 把栈中所有字符串依次出栈存于tmp_str中，对其进行整体取逆序，也就是说对于其中的字符串是不会每个都翻转的，只是整体顺序取反，然后将其进行join成一个完整字符串后就可以进行倍数计算了。所得的字符串再入栈即可。
 
-<img src="D:\App_for_social\Wechat\xwechat_files\wxid_y6xr9yq87dad12_0b1b\temp\RWTemp\2025-11\246778dc5d177051aaaade1e1e9ab490\fead43de2944f745504afd4c35b58cad.jpg" alt="fead43de2944f745504afd4c35b58cad" style="zoom: 50%;" />
+![Q394](images/Q394.jpg)
 
 ```python
 class Solution:
