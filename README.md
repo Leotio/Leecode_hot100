@@ -2709,7 +2709,7 @@ class MinStack:
 
 3.``']'``： 把栈中所有字符串依次出栈存于tmp_str中，对其进行整体取逆序，也就是说对于其中的字符串是不会每个都翻转的，只是整体顺序取反，然后将其进行join成一个完整字符串后就可以进行倍数计算了。所得的字符串再入栈即可。
 
-![Q394](images/Q394.jpg)
+![Q394](E:\笔记\Q394.jpg)
 
 ```python
 class Solution:
@@ -3015,6 +3015,7 @@ class Solution:
 - 而如果不是要插入较小的这边的，经过这样的操作，就能在保证两个堆中元素的相对大小下，平衡俩个堆的元素数量。
 
 **语法补充：**Python中的堆操作：（首先要注意一个点，就是python内置的堆都是小顶堆，所以实现大顶堆要对元素进行取反操作）
+
 `heapq` 模块的设计思想是，它操作的是**普通的 Python 列表**，然后**在其内部维持**这个列表的堆特性（最小堆）。所以真正操作的对象并不是堆！只是普通列表，所以不需要在开始就进行heapify操作！
 
 | 操作类型     | 函数/方法                    | 时间复杂度 | 描述                   | 示例                                 |
@@ -3576,7 +3577,6 @@ class Solution:
     def longestPalindrome(self, s: str) -> str:
         n = len(s)
         # 最长回文串长度
-        length = 1
         max_string = s[0]
         # 长度小于2一定是回文串
         if n < 2:
@@ -3603,9 +3603,8 @@ class Solution:
                         # 否则需要看中间去头去尾的子串是否为回文串
                         dp[i][j] = dp[i+1][j-1]
                     # 如果确实为回文串,且长度更新了；更新max_string和length
-                    if dp[i][j] and Length > length:
+                    if dp[i][j]:
                         max_string = s[i:j+1]
-                        length = Length
         return max_string
 ```
 
