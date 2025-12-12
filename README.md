@@ -112,7 +112,22 @@ class Solution:
                 left += 1
             right += 1
 ````
+五刷的代码，我觉得好优雅：
 
+```python
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        sort_last = 0
+        for i in range(len(nums)):
+            if nums[i] != 0:
+                nums[sort_last], nums[i] = nums[i], nums[sort_last]
+                sort_last += 1
+```
+
+### 
 ### [11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/)
 
 这道题的算法思路倒是有印象，但是自己去写的时候真的是写了依托啊，有时候代码的简洁性，可读性真的是要多练。
