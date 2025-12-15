@@ -112,6 +112,7 @@ class Solution:
                 left += 1
             right += 1
 ````
+
 五刷的代码，我觉得好优雅：
 
 ```python
@@ -127,7 +128,6 @@ class Solution:
                 sort_last += 1
 ```
 
-### 
 ### [11. 盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/)
 
 这道题的算法思路倒是有印象，但是自己去写的时候真的是写了依托啊，有时候代码的简洁性，可读性真的是要多练。
@@ -1192,7 +1192,56 @@ class Solution:
             start = cur 
 ```
 
+五刷的代码，把四刷的代码里面的reverse变成函数，其他基本不变，卡那个  while pre_tail.next and count > 0:半天，一直没加next
 
+```python
+class Solution:
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        # 没有假头的reverse
+        def reverse(link1):
+            pre = link1
+            cur = pre.next
+            while cur:
+                tmp = cur.next
+                cur.next = pre
+                pre = cur
+                cur = tmp
+            return pre
+
+        dummy = ListNode(0)
+        dummy.next = head
+        pre_tail = dummy
+
+        while True:
+            count = k
+            # tmp存一下上一段的尾节点
+            tmp = pre_tail
+            # 这一段没逆转前的头节点
+            cur_head = tmp.next
+            #  一定是pre_tail.next;要不然就把if count > 0 :改成if count > 0 or not pre_tail :
+            while pre_tail.next and count > 0:
+                pre_tail = pre_tail.next
+                count -= 1
+            # 节点不足K个了，return
+            if count > 0 :
+                return dummy.next
+            # 这个时候的pre_tail已经到达此次逆转的链表尾节点，改个名，避免误解
+            cur_tail = pre_tail
+            # 存一下后一段的头节点
+            nxt_head = cur_tail.next
+            # 和下一段断开
+            cur_tail.next = None
+            # 翻转后的新头节点
+            newhead = reverse(cur_head) 
+            # 和前面一段接上
+            tmp.next = newhead
+            # 和后面一段接上
+            cur_head.next = nxt_head 
+            # 只需要更新pre_tail；因为while pre_tail.next and count > 0:开始前只涉及到pre_tail就行
+            pre_tail = cur_head
+
+        return dummy.next
+```
 
 ### [138. 随机链表的复制](https://leetcode.cn/problems/copy-list-with-random-pointer/)
 
@@ -2600,6 +2649,24 @@ class Solution:
         # return第一个元素就ok
         return nums[0]
 ````
+
+五刷代码太漂亮了：
+
+```python
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        n = len(nums)
+        if nums[n-1] >= nums[0]:
+            return nums[0]
+        left, right = 0, n-1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] >= nums[0]:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return nums[left]
+```
 
 ### [4. 寻找两个正序数组的中位数](https://leetcode.cn/problems/median-of-two-sorted-arrays/)
 
