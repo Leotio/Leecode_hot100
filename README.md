@@ -289,6 +289,25 @@ class Solution:
         return ans
 ```
 
+五刷的代码，把四刷的空间复杂度降下来了，但是还不如最开始的呢，因为Counter的语法比List还是复杂一些
+
+```python
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        pcnt = Counter(p)
+        np = len(p)
+        scnt = Counter(s[:np])
+        ans = []
+        if scnt == pcnt:
+            ans.append(0)
+        for i in range(np,len(s)):
+            scnt[s[i]] += 1
+            scnt[s[i-np]] -= 1
+            if scnt == pcnt:
+                ans.append(i-np+1)
+        return ans
+```
+
 ## 字串
 
 ### [560. 和为 K 的子数组](https://leetcode.cn/problems/subarray-sum-equals-k/)
@@ -2323,6 +2342,7 @@ class Solution:
                 # 选择当前值
                 tmp.append(candidates[i])
                 # 递归处理下一个选择，但是选择可以重复！
+                # 不是backtrack(index, cur_target-candidates[i])！要不然会出现重复的组合，要保证不能选择i之前的啊
                 backtrack(i, cur_target-candidates[i])
                 # 回溯到没有选择此数值的情况去
                 # 而且我本来担心回溯了之后，下次又选了这个值，但实际上不会，因为for循环里面的话会强制到下一个了
